@@ -14,7 +14,7 @@ fn main() {
 
     for instruction in instructions {
         let (rotation, distance) = instruction;
-        current_facing = get_direction(rotation.to_string(), current_facing);
+        current_facing = get_direction(rotation, current_facing);
         match current_facing {
             0 => y += distance,
             1 => x += distance,
@@ -28,13 +28,12 @@ fn main() {
 }
 
 fn get_input() -> String {
-    let input = fs::read_to_string("inputs/day01.txt").expect("Could not read input");
-    input
+    fs::read_to_string("inputs/day01.txt").expect("Could not read input")
 }
 
-fn get_direction(rotation: String, current_direction: i8) -> i8 {
+fn get_direction(rotation: &str, current_direction: i8) -> i8 {
     if rotation == "R" {
         return (current_direction + 1) % 4;
     }
-    return (current_direction + 3) % 4;
+    (current_direction + 3) % 4
 }
