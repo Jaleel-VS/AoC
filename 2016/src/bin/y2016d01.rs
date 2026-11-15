@@ -1,4 +1,7 @@
-use std::fs;
+use std::{
+    collections::{HashMap, HashSet},
+    fs,
+};
 
 fn main() {
     let raw_directions = get_input();
@@ -12,19 +15,26 @@ fn main() {
     let mut y: i32 = 0;
     let mut current_facing = 0;
 
+    let mut visited: HashSet<(i32, i32)> = HashSet::new();
+    visited.insert((0, 0));
+
     for instruction in instructions {
         let (rotation, distance) = instruction;
         current_facing = get_direction(rotation, current_facing);
-        match current_facing {
-            0 => y += distance,
-            1 => x += distance,
-            2 => y -= distance,
-            3 => x -= distance,
-            _ => println!("Unexpected result"),
+        for _ in 1..distance + 1 {
+            match current_facing {
+                0 => y += 1,
+                1 => x += 1,
+                2 => y -= 1,
+                3 => x -= 1,
+                _ => println!("Unexpected result"),
+            }
+            if !visited.insert((x, y)) {
+                println!("{}", x.abs() + y.abs());
+                return;
+            }
         }
     }
-
-    println!("{}", x.abs() + y.abs())
 }
 
 fn get_input() -> String {
